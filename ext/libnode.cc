@@ -10,7 +10,8 @@ void eval(char jscode[]) {
 }
 
 int main(int argc, char* argv[]) {
-  eval("class A {a(n){console.log(n);}}; new A().a(7777);");
+ char code[] = "class A {a(n){console.log(n);}}; new A().a(7777);";
+  eval(code);
   node::Start(argc, argv);
   return 0;
 }
