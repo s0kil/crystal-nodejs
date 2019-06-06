@@ -2,16 +2,16 @@
 
 int node::Start(int argc, char* argv[]);
 
-int main()
-{
-
+void eval(char jscode[]) {
   char argv0[] = "crystal_node";
   char argv1[] = "-e";
-  char argv2[] = "console.log('aaaa');class A {a(n){console.log(n);}}; new A().a(111111);";
-  char *argv[] = {argv0, argv1, argv2};
+  char *argv[] = {argv0, argv1, jscode};
   node::Start(3, argv);
-
-  return 0;
 }
 
+int main(int argc, char* argv[]) {
+  eval("class A {a(n){console.log(n);}}; new A().a(7777);");
+  node::Start(argc, argv);
+  return 0;
+}
 
