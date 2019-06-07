@@ -2,17 +2,29 @@
 
 int node::Start(int argc, char* argv[]);
 
-void eval(char jscode[]) {
-  char argv0[] = "crystal_node";
-  char argv1[] = "-e";
-  char *argv[] = {argv0, argv1, jscode};
+void eval(char *code) {
+  char* argv[3];
+  char* app = (char*)"crystal_nodejs";
+  char* option = (char*)"-e";
+  argv[0] = app;
+  argv[1] = option;
+  argv[2] = code;
   node::Start(3, argv);
 }
 
-int main(int argc, char* argv[]) {
- char code[] = "class A {a(n){console.log(n);}}; new A().a(7777);";
+// void install() {
+  // char* argv[2];
+  // char* app = (char*)"crystal_nodejs";
+  // char* option = (char*)"/home/t/Work/crystal-nodejs/ext/test.js";
+  // argv[0] = app;
+  // argv[1] = option;
+  // node::Start(2, argv);
+// }
+
+int main() {
+  char* code = (char* )"console.log('test');";
   eval(code);
-  node::Start(argc, argv);
+  // install();
   return 0;
 }
 
