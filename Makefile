@@ -1,13 +1,14 @@
 CRYSTAL_NODEJS_DIR := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 
-EXT_DIR      = ${CRYSTAL_NODEJS_DIR}/ext
-NODE_BIN_DIR = ${EXT_DIR}/${NODE_VERSION}/bin
-NODE_LIB_DIR = ${EXT_DIR}/${NODE_VERSION}/lib
-HIDDEN_DIR   = $(HOME)/.crystal-nodejs
-NODE_VERSION = v10.16.0
-OS           = $(shell uname)
-LINUX_SO     = libnode.so.64
-MAC_OSX_SO   = libnode.64.dylib
+EXT_DIR      		 = ${CRYSTAL_NODEJS_DIR}/ext
+NODE_BIN_DIR     = ${EXT_DIR}/${NODE_VERSION}/bin
+NODE_LIB_DIR     = ${EXT_DIR}/${NODE_VERSION}/lib
+NODE_INCLUDE_DIR = ${EXT_DIR}/${NODE_VERSION}/include
+HIDDEN_DIR   		 = $(HOME)/.crystal-nodejs
+NODE_VERSION 		 = v10.16.0
+OS               = $(shell uname)
+LINUX_SO         = libnode.so.64
+MAC_OSX_SO       = libnode.64.dylib
 
 
 .PHONY: all
@@ -36,14 +37,14 @@ build:
 	@if [ ${OS} = "Linux" ]; then \
 		g++ \
 		-std=c++11 -g -Wl,-rpath=${NODE_LIB_DIR} \
-		-I/tmp/${NODE_VERSION}/include/node/ \
+		-I${NODE_INCLUDE_DIR}/node/ \
 		${EXT_DIR}/libnode.cc ${SOURCE} -o \
 		${NODE_BIN_DIR}/node \
 		${NODE_LIB_DIR}/${LINUX_SO}; \
   elif [ ${OS} = "Darwin" ]; then \
 		g++ \
 		-std=c++11 -g -Wl,-rpath ${NODE_LIB_DIR} \
-		-I/tmp/${NODE_VERSION}/include/node/ \
+		-I${NODE_INCLUDE_DIR}/node/ \
 		${EXT_DIR}/libnode.cc ${SOURCE} -o \
 		${NODE_BIN_DIR}/node \
 		${NODE_LIB_DIR}/${MAC_OSX_SO}; \
@@ -95,8 +96,9 @@ nodejs:
 	rm -rf ${EXT_DIR}/${NODE_VERSION} 
 	mkdir ${EXT_DIR}/${NODE_VERSION}
 
-	@cp -r /tmp/${NODE_VERSION}/bin ${NODE_BIN_DIR}
-	@cp -r /tmp/${NODE_VERSION}/lib ${NODE_LIB_DIR}	
+	@cp -r /tmp/${NODE_VERSION}/bin     ${NODE_BIN_DIR}
+	@cp -r /tmp/${NODE_VERSION}/include ${NODE_BIN_DIR}
+	@cp -r /tmp/${NODE_VERSION}/lib     ${NODE_LIB_DIR}	
 
 clean:
 	rm -rf ${HIDDEN_DIR}/  
